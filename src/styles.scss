@@ -1,17 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 
+
+
+// Estilos globales
+html, body {
+  height: 100%;
+  background-color: #efa7a7; // Fondo rojo sólido
+  color: #000000; // Texto negro
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Personalización específica para componentes
+.mat-toolbar {
+  background-color: #d72828 !important; // Toolbar rojo
+  color: #000000 !important; // Texto negro en toolbar
+}
+
+.mat-card {
+  background-color: #ffffff; // Fondo blanco para tarjetas
+  color: #000000; // Texto negro en tarjetas
+}
+
+.mat-button, .mat-raised-button {
+  background-color: #d32f2f; // Rojo oscuro para botones
+  color: #000000 !important; // Texto negro en botones
+}
+
+// Personalización adicional para el login
+.login-container {
+  background-color: #ff0000;
+  color: #000000;
+  
+  .login-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.full-width {
-  width: 100%;
-}
-
-// Customize the entire app. Change :root to your selector if you want to scope the styles.
-:root {
-  @include mat.toolbar-overrides((
-    container-background-color: rgb(216, 37, 9),
-    container-text-color: rgba(50, 45, 49, 0.874),
-  ));
-}

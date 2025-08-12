@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Editar' : 'Nuevo' }} Alumno</h2>
+<div mat-dialog-content>
+  <form [formGroup]="alumnoForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Número de Control</mat-label>
+      <input matInput formControlName="numero_control" required>
+      @if (alumnoForm.get('numero_control')?.invalid) {
+        <mat-error>Este campo es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" required>
+      @if (alumnoForm.get('nombre')?.invalid) {
+        <mat-error>Este campo es requerido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" required>
+      @if (alumnoForm.get('email')?.hasError('required')) {
+        <mat-error>Este campo es requerido</mat-error>
+      }
+      @if (alumnoForm.get('email')?.hasError('email')) {
+        <mat-error>Email inválido</mat-error>
+      }
+    </mat-form-field>
+
+    @if (isEditMode) {
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Fecha de Registro</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fecha_registro" readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    }
+
+    <div mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="alumnoForm.invalid">
+        {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

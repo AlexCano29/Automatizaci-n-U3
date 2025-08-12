@@ -12,7 +12,7 @@ export class Header {
   constructor(private router: Router) { }
 
   navegarLogin() {
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/login']);
   }
 
 }

@@ -1,6 +1,3 @@
-
-ci-basic-web.yaml:
-
 # Nombre del workflow
 name: CI/CD Frontend
 
@@ -47,4 +44,3 @@ jobs:
                 context: .
                 push: true
                 tags: alexcano29/ssv:latest
-
