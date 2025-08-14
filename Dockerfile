@@ -1,29 +1,42 @@
-FROM node:20-alpine AS builder
-
+# Stage 1: Build Angular
+FROM node:22.16.0-alpine AS angular-builder
 WORKDIR /app
-COPY package*.json prisma/ ./
+COPY sistema-ventas-web/package*.json .
 RUN npm ci
+COPY sistema-ventas-web .
+RUN npm run build -- --configuration=production
 
-# Generar el cliente de Prisma
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-RUN npx prisma generate
+# Stage 2: Prepare API
+FROM node:22.16.0-alpine AS api-prepare
+RUN npm install -g json-server
+WORKDIR /app/api
+COPY db.json .
+RUN echo $'#!/bin/sh\n\
+echo "🔄 Starting JSON Server on port 3000"\n\
+json-server --watch /app/api/db.json --port 3000 --host 0.0.0.0' > api-start.sh && \
+    chmod +x api-start.sh
 
-COPY . .
+# Stage 3: Runtime
+FROM nginx:alpine
 
-RUN npm run build
+# Install Node.js for API
+RUN apk add --no-cache nodejs npm && \
+    npm install -g json-server
 
-FROM node:20-alpine
+# Copy Angular build
+COPY --from=angular-builder /app/dist/sistema-ventas-web /usr/share/nginx/html
 
-WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
+# Copy API files
+COPY --from=api-prepare /app/api /app/api
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma ./prisma
+# Combined startup script
+RUN echo $'#!/bin/sh\n\
+echo "🚀 Starting services..."\n\
+json-server --watch /app/api/db.json --port 3000 --host 0.0.0.0 &\n\
+nginx -g "daemon off;"' > /start.sh && \
+    chmod +x /start.sh
 
-RUN npm ci --omit=dev
-
-EXPOSE 3000
-
-CMD ["node", "dist/main"]
+EXPOSE 80 3000
+HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost/ || exit 1
+CMD ["/start.sh"]

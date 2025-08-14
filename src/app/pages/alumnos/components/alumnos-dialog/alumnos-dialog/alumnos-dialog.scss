@@ -1,0 +1,64 @@
+/* Contenedor principal del diálogo */
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+  max-width: 600px;
+}
+
+/* Encabezado */
+.dialog-header {
+  background-color: #b53f3f;
+  color: white;
+  padding: 16px 24px;
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+}
+
+/* Cuerpo del formulario (opciones apiladas) */
+.dialog-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .form-field {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}
+
+/* Pie con botones de acción */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  gap: 8px;
+
+  button {
+    min-width: 100px;
+  }
+}
+
+/* Estilos específicos para campos */
+.mat-form-field {
+  width: 100%;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+/* Estilos responsivos */
+@media (max-width: 600px) {
+  .dialog-container {
+    min-width: 90vw;
+  }
+  
+  .dialog-body {
+    padding: 16px;
+  }
+}

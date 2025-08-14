@@ -8,7 +8,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AlumnosService } from './services/alumnos.service';
 
 @NgModule({
-  
+  declarations: [
+    
+  ],
   imports: [
     CommonModule,
     AlumnosRoutingModule,

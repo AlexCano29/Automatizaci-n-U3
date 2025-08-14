@@ -1,20 +1,25 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BaseForm } from '../../../shared/utils/base-form';
+import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
-  standalone: false
+  standalone: false, 
 })
 export class LoginComponent {
   hidePassword = true;
   loginForm: FormGroup;
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
-    public baseForm: BaseForm // Inyección correcta como propiedad pública
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -24,7 +29,25 @@ export class LoginComponent {
 
   onLogin() {
     if (this.loginForm.valid) {
-      // Lógica de login aquí
+      this.loading = true;
+      const credentials = {
+        username: this.loginForm.value.username,
+        password: this.loginForm.value.password
+      };
+
+      this.authService.login(credentials).subscribe({
+        next: () => {
+          this.router.navigate(['/home']);
+          this.loading = false;
+        },
+        error: (error) => {
+          this.loading = false;
+          this.snackBar.open(error.message || 'Error en el login', 'Cerrar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
     }
   }
 }

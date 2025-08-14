@@ -1,3 +1,47 @@
 {
-  "alumnos": []
+  "alumnos": [
+    {
+      "id": "5d15",
+      "numero_control": "001",
+      "nombre": "Kevin Luna",
+      "email": "kevl@gmail.com",
+      "fecha_registro": "2025-08-13T23:07:42.057Z",
+      "username": "kluna",
+      "password": "kevin177",
+      "activo": true,
+      "role": "alumno"
+    },
+    {
+      "id": "e726",
+      "numero_control": "1201",
+      "nombre": "Chapa",
+      "email": "cristian@gmail.com",
+      "fecha_registro": "2025-08-13T23:38:32.343Z",
+      "username": "carredondo",
+      "password": "123456",
+      "activo": true,
+      "role": "alumno"
+    },
+    {
+      "id": "e1ef",
+      "numero_control": "002",
+      "nombre": "Liz",
+      "email": "lizi2010@gmail.com",
+      "fecha_registro": "2025-08-14T16:10:53.126Z",
+      "username": "lili05",
+      "password": "12345678",
+      "activo": true,
+      "role": "alumno"
+    },
+    {
+      "id": "1c3d",
+      "username": "lili05",
+      "password": "12345678"
+    },
+    {
+      "id": "3499",
+      "username": "lili05",
+      "password": "12345678"
+    }
+  ]
 }

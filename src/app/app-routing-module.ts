@@ -19,7 +19,15 @@ const routes: Routes = [
     path: 'login', 
     loadChildren: () => import('./pages/auth/login/login-module').then(m => m.LoginModule) 
   },
-  { path: 'alumnos', loadChildren: () => import('./pages/alumnos/alumnos-module').then(m => m.AlumnosModule) }
+  { 
+    path: 'alumnos', 
+    loadChildren: () => import('./pages/alumnos/alumnos-module').then(m => m.AlumnosModule) 
+  },
+  // Ruta de fallback (opcional)
+  { 
+    path: '**', 
+    redirectTo: 'login' 
+  }
 ];
 
 @NgModule({

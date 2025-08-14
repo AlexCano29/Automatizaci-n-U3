@@ -1,47 +1,69 @@
-<h2 mat-dialog-title>{{ isEditMode ? 'Editar' : 'Nuevo' }} Alumno</h2>
-<div mat-dialog-content>
-  <form [formGroup]="alumnoForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="outline" class="w-full">
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2>{{ isEditMode ? 'Editar Alumno' : 'Nuevo Alumno' }}</h2>
+  </div>
+
+  <form [formGroup]="alumnoForm" class="dialog-body">
+    <mat-form-field appearance="outline" class="form-field">
       <mat-label>Número de Control</mat-label>
       <input matInput formControlName="numero_control" required>
       @if (alumnoForm.get('numero_control')?.invalid) {
-        <mat-error>Este campo es requerido</mat-error>
+        <mat-error>Requerido</mat-error>
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" required>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Nombre Completo</mat-label>
+      <input matInput formControlName="nombre" required (blur)="generateCredentials()">
       @if (alumnoForm.get('nombre')?.invalid) {
-        <mat-error>Este campo es requerido</mat-error>
+        <mat-error>Requerido</mat-error>
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-full">
+    <mat-form-field appearance="outline" class="form-field">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" type="email" required>
       @if (alumnoForm.get('email')?.hasError('required')) {
-        <mat-error>Este campo es requerido</mat-error>
+        <mat-error>Requerido</mat-error>
       }
       @if (alumnoForm.get('email')?.hasError('email')) {
         <mat-error>Email inválido</mat-error>
       }
     </mat-form-field>
 
-    @if (isEditMode) {
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Fecha de Registro</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="fecha_registro" readonly>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Nombre de Usuario</mat-label>
+      <input matInput formControlName="username" required>
+      <button matSuffix mat-icon-button (click)="generateCredentials()" type="button">
+        <mat-icon>autorenew</mat-icon>
+      </button>
+      @if (alumnoForm.get('username')?.invalid) {
+        <mat-error>Mínimo 4 caracteres</mat-error>
+      }
+    </mat-form-field>
+
+    @if (!isEditMode) {
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Contraseña Temporal</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required>
+        <button matSuffix mat-icon-button (click)="hidePassword = !hidePassword" type="button">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (alumnoForm.get('password')?.invalid) {
+          <mat-error>Mínimo 6 caracteres</mat-error>
+        }
       </mat-form-field>
     }
 
-    <div mat-dialog-actions align="end">
-      <button mat-button (click)="onCancel()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="alumnoForm.invalid">
-        {{ isEditMode ? 'Actualizar' : 'Guardar' }}
-      </button>
-    </div>
+    <mat-checkbox formControlName="activo" class="form-field">Cuenta activa</mat-checkbox>
   </form>
+
+  <div class="dialog-actions">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" 
+            [disabled]="alumnoForm.invalid"
+            (click)="onSubmit()">
+      {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
 </div>

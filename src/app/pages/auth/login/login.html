@@ -5,34 +5,39 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <!-- Campo Usuario -->
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" novalidate>
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Usuario</mat-label>
           <mat-icon matPrefix>person</mat-icon>
           <input matInput formControlName="username" required>
           <mat-error *ngIf="loginForm.get('username')?.invalid">
-            {{baseForm.getErrorMessage(loginForm.get('username'))}}
+            Usuario es requerido
           </mat-error>
         </mat-form-field>
 
-        <!-- Campo Contraseña -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Contraseña</mat-label>
           <mat-icon matPrefix>lock</mat-icon>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required>
-          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+          <input matInput [type]="hidePassword ? 'password' : 'text'" 
+                 formControlName="password" required>
+          <button type="button" mat-icon-button matSuffix 
+                  (click)="hidePassword = !hidePassword">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           <mat-error *ngIf="loginForm.get('password')?.invalid">
-            {{baseForm.getErrorMessage(loginForm.get('password'))}}
+            Mínimo 6 caracteres
           </mat-error>
         </mat-form-field>
 
-        <!-- Botón Acceder -->
-        <button mat-raised-button color="primary" type="submit" class="login-button">
+        <button mat-raised-button color="primary" 
+                type="submit" 
+                class="login-button"
+                [disabled]="loginForm.invalid || loading">
           <mat-icon>login</mat-icon>
-          Acceder
+          {{ loading ? 'CARGANDO...' : 'INGRESAR' }}
+          <mat-spinner *ngIf="loading" 
+                      diameter="20" 
+                      class="spinner"></mat-spinner>
         </button>
       </form>
     </mat-card-content>
