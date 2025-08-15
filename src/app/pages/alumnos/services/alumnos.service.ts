@@ -46,14 +46,6 @@ export class AlumnosService {
   }
 
   deleteAlumno(id: number): Observable<void> {
-    if (!id) {
-      return throwError(() => new Error('ID inválido para eliminación'));
-    }
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() }).pipe(
-      catchError(error => {
-        console.error('Error al eliminar alumno:', error);
-        return throwError(() => error);
-      })
-    );
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

@@ -88,25 +88,23 @@ export class AlumnosListComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
-  onDelete(id: number): void {
-    if (!id) {
-      this.snackBar.open('Error: ID no válido', 'Cerrar', { duration: 3000 });
-      return;
-    }
-
-    if (confirm('¿Estás seguro de eliminar este alumno?')) {
-      this.alumnosService.deleteAlumno(id).subscribe({
-        next: () => {
-          // Actualización optimista
-          this.dataSource.data = this.dataSource.data.filter(a => a.id !== id);
-          this.snackBar.open('Alumno eliminado correctamente', 'Cerrar', { duration: 3000 });
-        },
-        error: (error) => {
-          console.error('Error al eliminar:', error);
-          this.snackBar.open(`Error al eliminar: ${error.message}`, 'Cerrar', { duration: 5000 });
-        }
-      });
-    }
+  
+  onDelete(id: number) {
+  if (confirm('¿Estás seguro de eliminar este alumno?')) {
+    this.alumnosService.deleteAlumno(id).subscribe({
+      next: () => {
+        // Actualizar la lista local después de eliminar
+        this.dataSource.data = this.dataSource.data.filter(a => a.id !== id);
+        this.snackBar.open('Alumno eliminado correctamente', 'Cerrar', { duration: 3000 });
+      },
+      error: (error) => {
+        this.snackBar.open('Error al eliminar alumno', 'Cerrar', { duration: 3000 });
+        console.error('Error:', error);
+      }
+    });
   }
+}
+
+  
+    
 }

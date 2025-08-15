@@ -28,26 +28,20 @@ export class LoginComponent {
   }
 
   onLogin() {
-    if (this.loginForm.valid) {
-      this.loading = true;
-      const credentials = {
-        username: this.loginForm.value.username,
-        password: this.loginForm.value.password
-      };
+  if (this.loginForm.valid) {
+    this.loading = true;
+    const credentials = {
+      username: this.loginForm.value.username,
+      password: this.loginForm.value.password
+    };
 
-      this.authService.login(credentials).subscribe({
-        next: () => {
-          this.router.navigate(['/home']);
-          this.loading = false;
-        },
-        error: (error) => {
-          this.loading = false;
-          this.snackBar.open(error.message || 'Error en el login', 'Cerrar', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-        }
-      });
-    }
+    this.authService.login(credentials).subscribe(success => {
+      this.loading = false;
+      if (success) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
+ }
+ 
 }
